@@ -41,7 +41,7 @@
   
   // -- GAME CONSTANTS AND VARIABLES --
 
-  var MAP      = { tw: 64, th: 48 },
+  var MAP      = { tw: 64, th: 24 },
       TILE     = 32,
       METER    = TILE,
       GRAVITY  = 9.8 * 6, 
@@ -228,7 +228,10 @@
     }
   
     entity.falling = ! (celldown || (nx && celldiag));
-  
+
+    // die for falling
+    if(entity.y > width)
+      killPlayer(entity);
   }
 
   // -- RENDERING --
