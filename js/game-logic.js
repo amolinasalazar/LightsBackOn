@@ -297,27 +297,38 @@
   // -- MAP LOAD --
   
   function setup(map) {
-    var data    = map.layers[0].data,
-        objects = map.layers[1].objects,
+    if (window.DOMParser) {
+      // code for modern browsers
+      parser = new DOMParser();
+      xmlDoc = parser.parseFromString(map,"text/xml");
+    } else {
+      // code for old IE browsers
+    xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+      xmlDoc.async = false;
+      xmlDoc.loadXML(map); 
+    }
+
+    var data    = xmlDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
+        objects = xmlDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
         n, obj, entity;
 
     for(n = 0 ; n < objects.length ; n++) {
       obj = objects[n];
       entity = setupEntity(obj);
-      switch(obj.type) {
+      switch(obj.getAttribute("type")) {
       case "player"   : player = entity; break;
       case "monster"  : monsters.push(entity); break;
       case "treasure" : treasure.push(entity); break;
       }
     }
 
-    cells = data;
+    cells = data.split(',').map(x => parseInt(x));
   }
 
   function setupEntity(obj) {
     var entity = {};
-    entity.x        = obj.x;
-    entity.y        = obj.y;
+    entity.x        = parseInt(obj.getAttribute("x"));
+    entity.y        = parseInt(obj.getAttribute("y"));
     entity.dx       = 0;
     entity.dy       = 0;
     //entity.gravity  = METER * (obj.properties.gravity || GRAVITY);
@@ -332,12 +343,13 @@
     entity.impulse  = METER * (IMPULSE);
     entity.accel    = entity.maxdx / (ACCEL);
     entity.friction = entity.maxdx / (FRICTION);
-    entity.monster  = obj.type == "monster";
-    entity.player   = obj.type == "player";
-    entity.treasure = obj.type == "treasure";
-    entity.left     = obj.properties.left;
-    entity.right    = obj.properties.right;
-    entity.start    = { x: obj.x, y: obj.y }
+    var type = obj.getAttribute("type");
+    entity.monster  = type == "monster";
+    entity.player   = type == "player";
+    entity.treasure = type == "treasure";
+    //entity.left     = obj.properties.left;
+    //entity.right    = obj.properties.right;
+    entity.start    = { x: entity.x, y: entity.y }
     entity.killed = entity.collected = 0;
     return entity;
   }
@@ -363,8 +375,8 @@
   document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
   document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
 
-  get("levelsData/level1.json", function(req) {
-    setup(JSON.parse(req.responseText));
+  get("levelsData/level1.xml", function(req) {
+    setup(req.responseText);
     frame();
   });
 })();
