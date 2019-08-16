@@ -63,7 +63,8 @@
       player   = {},
       monsters = [],
       treasure = [],
-      cells    = [];
+      cells    = [],
+      Level    = 1;
   
   var t2p      = function(t)     { return t*TILE;                  },
       p2t      = function(p)     { return Math.floor(p/TILE);      },
@@ -131,6 +132,8 @@
   function collectTreasure(t) {
     player.collected++;
     t.collected = true;
+    Level++;
+    loadLevel();
   }
 
   function updateEntity(entity, dt) {
@@ -375,9 +378,13 @@
   document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
   document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
 
-  get("levelsData/level1.xml", function(req) {
-    setup(req.responseText);
-    frame();
-  });
+  loadLevel();
+
+  function loadLevel(){
+    get(`levelsData/level${Level}.xml`, function(req) {
+      setup(req.responseText);
+      frame();
+    });
+  }
 })();
 
