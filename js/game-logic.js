@@ -64,7 +64,8 @@
       monsters = [],
       treasure = [],
       cells    = [],
-      Level    = 1;
+      Level    = 1,
+      mapTransparency = 1;
   
   var t2p      = function(t)     { return t*TILE;                  },
       p2t      = function(p)     { return Math.floor(p/TILE);      },
@@ -246,6 +247,7 @@
 
   function renderMap(ctx) {
     var x, y, cell;
+    ctx.globalAlpha = mapTransparency;
     for(y = 0 ; y < MAP.th ; y++) {
       for(x = 0 ; x < MAP.tw ; x++) {
         cell = tcell(x, y);
@@ -255,6 +257,7 @@
         }
       }
     }
+    ctx.globalAlpha = 1;
   }
 
   function renderPlayer(ctx, dt) {
@@ -384,10 +387,13 @@
   loadLevel();
 
   function loadLevel(){
+    mapTransparency = 1;
     get(`levelsData/level${Level}.xml`, function(req) {
       setup(req.responseText);
       frame();
     });
+
+    setTimeout(function(){ mapTransparency = 0; }, 3000);
   }
 })();
 
