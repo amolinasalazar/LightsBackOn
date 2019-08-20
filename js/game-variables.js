@@ -1,0 +1,13 @@
+var fps      = 60,
+    step     = 1/fps,
+    canvas   = document.getElementById('canvas'),
+    ctx      = canvas.getContext('2d'),
+    width    = canvas.width  = MAP.tw * TILE,
+    height   = canvas.height = MAP.th * TILE,
+    player   = {},
+    monsters = [],
+    treasure = [],
+    cells    = [],
+    Level    = 1,
+    mapTransparency = 1,
+    lightsBlinking = true;

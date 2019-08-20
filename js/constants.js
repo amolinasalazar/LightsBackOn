@@ -1,0 +1,13 @@
+var MAP      = { tw: 64, th: 24 },
+    TILE     = 32,
+    METER    = TILE,
+    GRAVITY  = 9.8 * 6, 
+    MAXDX    = 15,      // max horizontal speed (15 tiles per second)
+    MAXDY    = 60,      // max vertical speed   (60 tiles per second)
+    ACCEL    = 1/2,     // take 1/2 second to reach maxdx (horizontal acceleration)
+    FRICTION = 1/6,     // take 1/6 second to stop from maxdx (horizontal friction)
+    IMPULSE  = 1500,    // player jump impulse
+    COLOR    = { BLACK: '#000000', YELLOW: '#ECD078', BRICK: '#D95B43', PINK: '#C02942', PURPLE: '#542437', GREY: '#333', SLATE: '#53777A', GOLD: 'gold' },
+    COLORS   = [ COLOR.YELLOW, COLOR.BRICK, COLOR.PINK, COLOR.PURPLE, COLOR.GREY ],
+    KEY      = { SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 };
+    TIME_SWITCH_LIGHTS_OFF = 3000;

@@ -1,7 +1,8 @@
+
+
 (function() {
 
   // -- POLYFILLS --
-
   if (!window.requestAnimationFrame) {
     window.requestAnimationFrame = window.webkitRequestAnimationFrame || 
                                    window.mozRequestAnimationFrame    || 
@@ -11,67 +12,6 @@
                                      window.setTimeout(callback, 1000 / 60);
                                    }
   }
-
-  // -- UTILITIES --
-
-  function timestamp() {
-    return window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
-  }
-  
-  function bound(x, min, max) {
-    return Math.max(min, Math.min(max, x));
-  }
-
-  function get(url, onsuccess) {
-    var request = new XMLHttpRequest();
-    request.onreadystatechange = function() {
-      if ((request.readyState == 4) && (request.status == 200))
-        onsuccess(request);
-    }
-    request.open("GET", url, true);
-    request.send();
-  }
-
-  function overlap(x1, y1, w1, h1, x2, y2, w2, h2) {
-    return !(((x1 + w1 - 1) < x2) ||
-             ((x2 + w2 - 1) < x1) ||
-             ((y1 + h1 - 1) < y2) ||
-             ((y2 + h2 - 1) < y1))
-  }
-  
-  // -- GAME CONSTANTS AND VARIABLES --
-
-  var MAP      = { tw: 64, th: 24 },
-      TILE     = 32,
-      METER    = TILE,
-      GRAVITY  = 9.8 * 6, 
-      MAXDX    = 15,      // max horizontal speed (15 tiles per second)
-      MAXDY    = 60,      // max vertical speed   (60 tiles per second)
-      ACCEL    = 1/2,     // take 1/2 second to reach maxdx (horizontal acceleration)
-      FRICTION = 1/6,     // take 1/6 second to stop from maxdx (horizontal friction)
-      IMPULSE  = 1500,    // player jump impulse
-      COLOR    = { BLACK: '#000000', YELLOW: '#ECD078', BRICK: '#D95B43', PINK: '#C02942', PURPLE: '#542437', GREY: '#333', SLATE: '#53777A', GOLD: 'gold' },
-      COLORS   = [ COLOR.YELLOW, COLOR.BRICK, COLOR.PINK, COLOR.PURPLE, COLOR.GREY ],
-      KEY      = { SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 };
-      
-  var fps      = 60,
-      step     = 1/fps,
-      canvas   = document.getElementById('canvas'),
-      ctx      = canvas.getContext('2d'),
-      width    = canvas.width  = MAP.tw * TILE,
-      height   = canvas.height = MAP.th * TILE,
-      player   = {},
-      monsters = [],
-      treasure = [],
-      cells    = [],
-      Level    = 1,
-      mapTransparency = 1;
-  
-  var t2p      = function(t)     { return t*TILE;                  },
-      p2t      = function(p)     { return Math.floor(p/TILE);      },
-      cell     = function(x,y)   { return tcell(p2t(x),p2t(y));    },
-      tcell    = function(tx,ty) { return cells[tx + (ty*MAP.tw)]; };
-  
   
   // -- UPDATE LOOP --
   function onkey(ev, key, down) {
@@ -235,73 +175,7 @@
       killPlayer(entity);
   }
 
-  // -- RENDERING --
 
-  function render(ctx, frame, dt) {
-    ctx.clearRect(0, 0, width, height);
-    renderMap(ctx);
-    renderTreasure(ctx, frame);
-    renderPlayer(ctx, dt);
-    renderMonsters(ctx, dt);
-  }
-
-  function renderMap(ctx) {
-    var x, y, cell;
-    ctx.globalAlpha = mapTransparency;
-    for(y = 0 ; y < MAP.th ; y++) {
-      for(x = 0 ; x < MAP.tw ; x++) {
-        cell = tcell(x, y);
-        if (cell) {
-          ctx.fillStyle = COLORS[cell - 1];
-          ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  function renderPlayer(ctx, dt) {
-    ctx.fillStyle = COLOR.YELLOW;
-    ctx.fillRect(player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
-
-    var n, max;
-
-    ctx.fillStyle = COLOR.GOLD;
-    for(n = 0, max = player.collected ; n < max ; n++)
-      ctx.fillRect(t2p(2 + n), t2p(2), TILE/2, TILE/2);
-
-    ctx.fillStyle = COLOR.SLATE;
-    for(n = 0, max = player.killed ; n < max ; n++)
-      ctx.fillRect(t2p(2 + n), t2p(3), TILE/2, TILE/2);
-  }
-
-  function renderMonsters(ctx, dt) {
-    ctx.fillStyle = COLOR.SLATE;
-    var n, max, monster;
-    for(n = 0, max = monsters.length ; n < max ; n++) {
-      monster = monsters[n];
-      if (!monster.dead)
-        ctx.fillRect(monster.x + (monster.dx * dt), monster.y + (monster.dy * dt), TILE, TILE);
-    }
-  }
-
-  function renderTreasure(ctx, frame) {
-    ctx.fillStyle   = COLOR.GOLD;
-    ctx.globalAlpha = 0.25 + tweenTreasure(frame, 60);
-    var n, max, t;
-    for(n = 0, max = treasure.length ; n < max ; n++) {
-      t = treasure[n];
-      if (!t.collected)
-        ctx.fillRect(t.x, t.y + TILE/3, TILE, TILE*2/3);
-    }
-    ctx.globalAlpha = 1;
-  }
-
-  function tweenTreasure(frame, duration) {
-    var half  = duration/2
-        pulse = frame%duration;
-    return pulse < half ? (pulse/half) : 1-(pulse-half)/half;
-  }
 
   // -- MAP LOAD --
   
@@ -375,7 +249,7 @@
       dt = dt - step;
       update(step);
     }
-    render(ctx, counter, dt);
+    render(ctx, counter, dt, width, height, mapTransparency, MAP);
     last = now;
     counter++;
     requestAnimationFrame(frame, canvas);
@@ -387,13 +261,31 @@
   loadLevel();
 
   function loadLevel(){
+    if(Level == 1)
+      printTutorial();
+    
+    if(Level == 2)
+      removeTutorial();
+
     mapTransparency = 1;
     get(`levelsData/level${Level}.xml`, function(req) {
       setup(req.responseText);
       frame();
     });
 
-    setTimeout(function(){ mapTransparency = 0; }, 3000);
+    setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; }, TIME_SWITCH_LIGHTS_OFF);
+  }
+
+  function printTutorial(){
+    var tutorial = document.createElement('p');
+    tutorial.innerHTML = "Use arrows to move <br/> Press Space to jump <br/> Press R to restart level";
+    var title = document.querySelector('title');
+    title.parentNode.insertBefore(tutorial, title);
+  }
+
+  function removeTutorial(){
+    var tutorial = document.querySelector('p');
+    tutorial.parentNode.removeChild(tutorial);
   }
 })();
 
