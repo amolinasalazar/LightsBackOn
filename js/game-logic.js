@@ -19,6 +19,7 @@
       case KEY.LEFT:  player.left  = down; ev.preventDefault(); return false;
       case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
       case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
+      case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
     }
   }
   
@@ -74,6 +75,7 @@
     player.collected++;
     t.collected = true;
     Level++;
+    LevelDataLoaded = false;
     loadLevel();
   }
 
@@ -191,8 +193,15 @@
       xmlDoc.loadXML(map); 
     }
 
-    var data    = xmlDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
-        objects = xmlDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
+    LevelDoc = xmlDoc;
+    LevelDataLoaded = true;
+    loadData(LevelDoc);
+  }
+
+  function loadData(LevelDoc){
+    // dividir en dos, solo llamar al setup pero no volver a cargar lkos datos con una llamada Get
+    var data    = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
+        objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
         n, obj, entity;
 
     for(n = 0 ; n < objects.length ; n++) {
@@ -261,19 +270,35 @@
   loadLevel();
 
   function loadLevel(){
-    if(Level == 1)
+    if(Level == 1 && !TutorialPrinted){
       printTutorial();
+      TutorialPrinted = true;
+    }
     
-    if(Level == 2)
+    if(Level == 2 && !TutorialRemoved){
       removeTutorial();
+      TutorialRemoved = true
+    }
 
     mapTransparency = 1;
-    get(`levelsData/level${Level}.xml`, function(req) {
-      setup(req.responseText);
-      frame();
-    });
+    if(!LevelDataLoaded){
+      get(`levelsData/level${Level}.xml`, function(req) {
+        setup(req.responseText);
+      });
+    }
+    else{
+      loadData(LevelDoc);
+    }
 
-    setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; }, TIME_SWITCH_LIGHTS_OFF);
+    if(!FrameCalled){
+      frame();
+      FrameCalled = true;
+    }
+    
+    if(LightsTimeout)
+      clearTimeout(LightsTimeout);
+
+    LightsTimeout = setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; }, TIME_SWITCH_LIGHTS_OFF);
   }
 
   function printTutorial(){
@@ -287,5 +312,6 @@
     var tutorial = document.querySelector('p');
     tutorial.parentNode.removeChild(tutorial);
   }
+
 })();
 
