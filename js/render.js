@@ -1,3 +1,9 @@
+var PlayerFacing = {
+	RIGHT: 0,
+	LEFT: 1
+  },
+  playerLastMovement = PlayerFacing.RIGHT;
+
 function render(ctx, frame, dt, width, height, mapTransparency) {
 	ctx.clearRect(0, 0, width, height);
 	renderMap(ctx, mapTransparency);
@@ -21,9 +27,31 @@ function renderMap(ctx, mapTransparency) {
 	ctx.globalAlpha = 1;
 }
 
+function refreshPlayerLastMovement(){
+	if(player.right && !player.left){
+		playerLastMovement = PlayerFacing.RIGHT;
+	}
+	else if(!player.right && player.left){
+		playerLastMovement = PlayerFacing.LEFT;
+	}
+}
+
 function renderPlayer(ctx, dt) {
 	ctx.fillStyle = COLOR.YELLOW;
-	var img = document.getElementById("test");
+
+	refreshPlayerLastMovement();
+
+	switch(playerLastMovement){
+		case PlayerFacing.RIGHT:
+			var img = document.getElementById("test");
+			break;
+		case PlayerFacing.LEFT:
+			var img = document.getElementById("test2");
+			break;
+		default:
+			var img = document.getElementById("test");
+	}
+	
   	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 
 	var n, max;
