@@ -23,17 +23,18 @@ function renderMap(ctx, mapTransparency) {
 
 function renderPlayer(ctx, dt) {
 	ctx.fillStyle = COLOR.YELLOW;
-	ctx.fillRect(player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
+	var img = document.getElementById("test");
+  	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 
 	var n, max;
 
 	ctx.fillStyle = COLOR.GOLD;
 	for(n = 0, max = player.collected ; n < max ; n++)
-		ctx.fillRect(t2p(2 + n), t2p(2), TILE/2, TILE/2);
+		ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 
 	ctx.fillStyle = COLOR.SLATE;
 	for(n = 0, max = player.killed ; n < max ; n++)
-		ctx.fillRect(t2p(2 + n), t2p(3), TILE/2, TILE/2);
+		ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 }
 
 function renderMonsters(ctx, dt) {
