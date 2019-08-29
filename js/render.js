@@ -1,3 +1,7 @@
+const TRAP_IMG = "./assets/22257-hedgehog-icon.png",
+	PLAYER_LEFT_IMG = "./assets/22257-hedgehog-icon.png",
+	PLAYER_RIGHT_IMG = "./assets/22282-crocodile-icon.png";
+
 var PlayerFacing = {
 	RIGHT: 0,
 	LEFT: 1
@@ -10,6 +14,7 @@ function render(ctx, frame, dt, width, height, mapTransparency) {
 	renderTreasure(ctx, frame);
 	renderPlayer(ctx, dt);
 	renderMonsters(ctx, dt);
+	renderTraps(ctx, dt);
 }
 
 function renderMap(ctx, mapTransparency) {
@@ -25,6 +30,20 @@ function renderMap(ctx, mapTransparency) {
 		}
 	}
 	ctx.globalAlpha = 1;
+}
+
+function getOrCreateImage(id, src){
+	var image = document.getElementById(id);
+
+	if(image)
+		return image;
+	
+	var container = document.getElementById("hiddenDiv");
+	var imageCreated = document.createElement('img');
+	imageCreated.id = id;
+	imageCreated.src = src;
+	container.appendChild(imageCreated);
+	return imageCreated;
 }
 
 function refreshPlayerLastMovement(){
@@ -43,13 +62,13 @@ function renderPlayer(ctx, dt) {
 
 	switch(playerLastMovement){
 		case PlayerFacing.RIGHT:
-			var img = document.getElementById("test");
+			var img = document.getElementById("playerRight");
 			break;
 		case PlayerFacing.LEFT:
-			var img = document.getElementById("test2");
+			var img = document.getElementById("playerLeft");
 			break;
 		default:
-			var img = document.getElementById("test");
+			var img = document.getElementById("playerRight");
 	}
 	
   	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
@@ -71,7 +90,16 @@ function renderMonsters(ctx, dt) {
 	for(n = 0, max = monsters.length ; n < max ; n++) {
 		monster = monsters[n];
 		if (!monster.dead)
-			ctx.fillRect(monster.x + (monster.dx * dt), monster.y + (monster.dy * dt), TILE, TILE);
+			ctx.drawImage(getOrCreateImage("trap"+n, TRAP_IMG), monster.x + (monster.dx * dt), monster.y + (monster.dy * dt), TILE, TILE);
+	}
+}
+
+function renderTraps(ctx, dt) {
+	ctx.fillStyle = COLOR.SLATE;
+	var n, max, trap;
+	for(n = 0, max = traps.length ; n < max ; n++) {
+		trap = traps[n];
+		ctx.drawImage(getOrCreateImage("trap"+n, TRAP_IMG), trap.x + (trap.dx * dt), trap.y + (trap.dy * dt), TILE, TILE);
 	}
 }
 

@@ -26,6 +26,7 @@
   function update(dt) {
     updatePlayer(dt);
     updateMonsters(dt);
+    updateTraps(dt);
     checkTreasure();
   }
 
@@ -37,6 +38,22 @@
     var n, max;
     for(n = 0, max = monsters.length ; n < max ; n++)
       updateMonster(monsters[n], dt);
+  }
+
+  function updateTraps(dt) {
+    var n, max;
+    for(n = 0, max = traps.length ; n < max ; n++)
+      updateTrap(traps[n], dt);
+  }
+
+  function updateTrap(trap, dt) {
+    updateEntity(trap, dt);
+    if (overlap(player.x, player.y, TILE, TILE, trap.x, trap.y, TILE, TILE)) {
+      if ((player.dy > 0) && (trap.y - player.y > TILE/2))
+        killPlayer(player);
+      else
+        killPlayer(player);
+    }
   }
 
   function updateMonster(monster, dt) {
@@ -211,6 +228,7 @@
       case "player"   : player = entity; break;
       case "monster"  : monsters.push(entity); break;
       case "treasure" : treasure.push(entity); break;
+      case "trap" : traps.push(entity); break;
       }
     }
 
@@ -237,6 +255,7 @@
     entity.friction = entity.maxdx / (FRICTION);
     var type = obj.getAttribute("type");
     entity.monster  = type == "monster";
+    entity.trap  = type == "trap";
     entity.player   = type == "player";
     entity.treasure = type == "treasure";
     //entity.left     = obj.properties.left;
