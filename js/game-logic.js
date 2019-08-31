@@ -97,8 +97,8 @@
 	}
 
 	function updateEntity(entity, dt) {
-		var wasleft    = entity.dx  < 0,
-				wasright   = entity.dx  > 0,
+		var wasLeft    = entity.dx  < 0,
+				wasRight   = entity.dx  > 0,
 				falling    = entity.falling,
 				friction   = entity.friction * (falling ? 0.5 : 1),
 				accel      = entity.accel    * (falling ? 0.5 : 1);
@@ -108,17 +108,25 @@
 	
 		if (entity.left)
 			entity.ddx = entity.ddx - accel;
-		else if (wasleft)
+		else if (wasLeft)
 			entity.ddx = entity.ddx + friction;
 	
 		if (entity.right)
 			entity.ddx = entity.ddx + accel;
-		else if (wasright)
+		else if (wasRight)
 			entity.ddx = entity.ddx - friction;
 	
 		if (entity.jump && !entity.jumping && !falling) {
 			entity.ddy = entity.ddy - entity.impulse; // an instant big force impulse
 			entity.jumping = true;
+		}
+
+		if (entity.player && !entity.jumping && (wasLeft || wasRight) && entity.dx != -16){
+				footStepsSound.play();
+		}
+		else{
+			footStepsSound.pause();
+			footStepsSound.currentTime = 0;
 		}
 	
 		entity.x  = entity.x  + (dt * entity.dx);
@@ -126,8 +134,8 @@
 		entity.dx = bound(entity.dx + (dt * entity.ddx), -entity.maxdx, entity.maxdx);
 		entity.dy = bound(entity.dy + (dt * entity.ddy), -entity.maxdy, entity.maxdy);
 	
-		if ((wasleft  && (entity.dx > 0)) ||
-				(wasright && (entity.dx < 0))) {
+		if ((wasLeft  && (entity.dx > 0)) ||
+				(wasRight && (entity.dx < 0))) {
 			entity.dx = 0; // clamp at zero to prevent friction from making us jiggle side to side
 		}
 	
@@ -217,7 +225,7 @@
 
 	function loadData(LevelDoc){
 		restartLevel();
-		
+
 		// dividir en dos, solo llamar al setup pero no volver a cargar lkos datos con una llamada Get
 		var data    = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
 				objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
@@ -287,6 +295,7 @@
 	
 	document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
 	document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
+	footStepsSound.play();
 
 	loadLevel();
 
