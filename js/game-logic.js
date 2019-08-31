@@ -216,6 +216,8 @@
 	}
 
 	function loadData(LevelDoc){
+		restartLevel();
+		
 		// dividir en dos, solo llamar al setup pero no volver a cargar lkos datos con una llamada Get
 		var data    = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
 				objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
