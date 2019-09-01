@@ -72,8 +72,10 @@
 		var n, max, t;
 		for(n = 0, max = treasure.length ; n < max ; n++) {
 			t = treasure[n];
-			if (!t.collected && overlap(player.x, player.y, TILE, TILE, t.x, t.y, TILE, TILE))
+			if (!t.collected && overlap(player.x, player.y, TILE, TILE, t.x, t.y, TILE, TILE)){
 				collectTreasure(t);
+				clickSound.play();
+			}
 		}
 	}
 
@@ -300,6 +302,8 @@
 	loadLevel();
 
 	function loadLevel(){
+		document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_ON;
+
 		if(Level == 1 && !TutorialPrinted){
 			printTutorial();
 			TutorialPrinted = true;
@@ -328,7 +332,7 @@
 		if(LightsTimeout)
 			clearTimeout(LightsTimeout);
 
-		LightsTimeout = setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; }, TIME_SWITCH_LIGHTS_OFF);
+		LightsTimeout = setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; lightsSound.play(); document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; }, TIME_SWITCH_LIGHTS_OFF);
 	}
 
 	function printTutorial(){
@@ -344,4 +348,3 @@
 	}
 
 })();
-
