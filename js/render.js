@@ -1,6 +1,7 @@
-const TRAP_IMG = "./assets/pinchos2.png",
-	PLAYER_LEFT_IMG = "./assets/peque2.png",
-	PLAYER_RIGHT_IMG = "./assets/peque2.png";
+const TRAP_IMG = "./assets/trap.png",
+	PLAYER_LEFT_IMG = "./assets/player-left.png",
+	PLAYER_RIGHT_IMG = "./assets/player-right.png",
+	SWITCH_IMG = "./assets/switch.png";
 
 var PlayerFacing = {
 	RIGHT: 0,
@@ -104,13 +105,15 @@ function renderTraps(ctx, dt) {
 }
 
 function renderTreasure(ctx, frame) {
-	ctx.fillStyle   = COLOR.GOLD;
-	ctx.globalAlpha = 0.25 + tweenTreasure(frame, 60);
+	//ctx.fillStyle   = COLOR.GOLD;
+	ctx.globalAlpha = 0.25 + tweenTreasure(frame, 240);
 	var n, max, t;
 	for(n = 0, max = treasure.length ; n < max ; n++) {
 		t = treasure[n];
-		if (!t.collected)
-			ctx.fillRect(t.x, t.y + TILE/3, TILE, TILE*2/3);
+		if (!t.collected){
+			//ctx.fillRect(t.x, t.y + TILE/3, TILE, TILE*2/3);
+			ctx.drawImage(getOrCreateImage("switch", SWITCH_IMG), t.x, t.y + TILE/3, TILE, TILE*2/3);
+		}
 	}
 	ctx.globalAlpha = 1;
 }
