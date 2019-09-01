@@ -18,7 +18,9 @@ var fps      = 60,
     LightsTimeout,
     LevelDataLoaded = false,
     LevelDoc,
-    footStepsSound = new Audio('./assets/foot-steps.mp3');
+    footStepsSound = new Audio('./assets/foot-steps.mp3'),
+    clickSound = new Audio('./assets/click.mp3'),
+    lightsSound = new Audio('./assets/lights-sound.mp3');
 
 function restartLevel() {
     fps      = 60;
