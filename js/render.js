@@ -1,6 +1,6 @@
-const TRAP_IMG = "./assets/22257-hedgehog-icon.png",
-	PLAYER_LEFT_IMG = "./assets/22257-hedgehog-icon.png",
-	PLAYER_RIGHT_IMG = "./assets/22282-crocodile-icon.png";
+const TRAP_IMG = "./assets/pinchos2.png",
+	PLAYER_LEFT_IMG = "./assets/peque2.png",
+	PLAYER_RIGHT_IMG = "./assets/peque2.png";
 
 var PlayerFacing = {
 	RIGHT: 0,
@@ -62,13 +62,13 @@ function renderPlayer(ctx, dt) {
 
 	switch(playerLastMovement){
 		case PlayerFacing.RIGHT:
-			var img = document.getElementById("playerRight");
+			var img = getOrCreateImage("playerRight", PLAYER_RIGHT_IMG);
 			break;
 		case PlayerFacing.LEFT:
-			var img = document.getElementById("playerLeft");
+			var img = getOrCreateImage("playerLeft", PLAYER_LEFT_IMG);
 			break;
 		default:
-			var img = document.getElementById("playerRight");
+			var img = getOrCreateImage("playerRight", PLAYER_RIGHT_IMG);
 	}
 	
   	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);

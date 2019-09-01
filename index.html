@@ -27,10 +27,7 @@
                 ERROR: Your browser does not support the &lt;canvas&gt; element.
             </div>
         </canvas>
-        <div id="hiddenDiv" style="display:none">
-            <image id="playerRight" src="./assets/22257-hedgehog-icon.png"></image>
-            <image id="playerLeft" src="./assets/22282-crocodile-icon.png"></image>
-        </div>
+        <div id="hiddenDiv" style="display:none"></div>
 
         <script src="./js/constants.js"></script>
         <script src="./js/utilities.js"></script>
@@ -38,6 +35,7 @@
         <script src="./js/game-variables.js"></script>
         <script src="./js/render.js"></script>
         <script>
+        
         document.addEventListener('keydown', function loadGame(e) { 
             var script = document.createElement('script');
             script.src = 'js/game-logic.js';
