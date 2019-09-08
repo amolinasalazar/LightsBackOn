@@ -237,7 +237,6 @@
 	}
 
 	// -- GAME LOOP --
-
 	var counter = 0, dt = 0, now,
 			last = timestamp();
 	
@@ -257,47 +256,50 @@
 	document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
 	document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
 	footStepsSound.load = true;
-
 	loadLevel();
 
 	function loadLevel(){
-		document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_ON;
-		lanternUsed = true;
-
-		if(Level == 2 && !TutorialRemoved){
-			removeTutorial();
-			TutorialRemoved = true
-		}
-
-		mapTransparency = 1;
-		if(!LevelDataLoaded){
-			get(`levelsData/level${Level}.xml`, function(req) {
-				setup(req.responseText);
-			});
-		}
+		if(Level > LEVEL_MAX)
+			credits();
 		else{
-			loadData(LevelDoc);
-		}
-
-		if(!FrameCalled){
-			frame();
-			FrameCalled = true;
-		}
-		
-		if(LightsTimeout)
-			clearTimeout(LightsTimeout);
-
-		LightsTimeout = setTimeout(function(){ 
-			if(Level == 1 && !TutorialPrinted){
-				printTutorial();
-				TutorialPrinted = true;
+			document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_ON;
+			lanternUsed = true;
+	
+			if(Level == 2 && !TutorialRemoved){
+				removeTutorial();
+				TutorialRemoved = true
 			}
-			lanternUsed = false;
-			lightsBlinking = false;
-			mapTransparency = 0; 
-			lightsSound.play(); 
-			document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; 
-		}, TIME_SWITCH_LIGHTS_OFF);
+	
+			mapTransparency = 1;
+			if(!LevelDataLoaded){
+				get(`levelsData/level${Level}.xml`, function(req) {
+					setup(req.responseText);
+				});
+			}
+			else{
+				loadData(LevelDoc);
+			}
+	
+			if(!FrameCalled){
+				frame();
+				FrameCalled = true;
+			}
+			
+			if(LightsTimeout)
+				clearTimeout(LightsTimeout);
+	
+			LightsTimeout = setTimeout(function(){ 
+				if(Level == 1 && !TutorialPrinted){
+					printTutorial();
+					TutorialPrinted = true;
+				}
+				lanternUsed = false;
+				lightsBlinking = false;
+				mapTransparency = 0; 
+				lightsSound.play(); 
+				document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; 
+			}, TIME_SWITCH_LIGHTS_OFF);
+		}
 	}
 
 	function printTutorial(){
@@ -310,5 +312,39 @@
 	function removeTutorial(){
 		var tutorial = document.querySelector('p');
 		tutorial.parentNode.removeChild(tutorial);
+	}
+
+	function credits(){
+		var credits = document.createElement('h2');
+		credits.setAttribute("class", "credits-titles");
+		credits.innerHTML = "Developer & Game Designer";
+
+		var names = document.createElement('h1');
+		names.setAttribute("data-heading", "Alejandro Molina Salazar");
+		names.setAttribute("class", "credits-names");
+		names.innerHTML = "Alejandro Molina Salazar";
+
+		var title = document.querySelector('title');
+		title.parentNode.insertBefore(names, title);
+		title.parentNode.insertBefore(credits, names);
+
+		setTimeout(function(){ 
+			credits.innerHTML = "Game Artist";
+			names.setAttribute("data-heading", "Beatriz Iañez Bustamante");
+			names.innerHTML = "Beatriz Iañez Bustamante";
+
+			clickSound.play();
+			setTimeout(function(){ 
+				names.setAttribute("data-heading", "The End");
+				names.innerHTML = "The End";
+				credits.parentNode.removeChild(credits);
+
+				clickSound.play();
+				setTimeout(function(){ 
+					names.parentNode.removeChild(names);
+					lightsSound.play(); 
+				}, CREDITS_TIME);
+			}, CREDITS_TIME);
+		}, CREDITS_TIME);
 	}
 })();

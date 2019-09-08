@@ -26,6 +26,16 @@ html, body {
 	font-size: 2vw;
 	letter-spacing: 0rem;
   }
+  .credits-titles{
+	color: rgba(255, 255, 255, .4);
+	top: 35%;
+	font-size: 4vw;
+	letter-spacing: 0rem;
+  }
+  .credits-names{
+	font-size: 5vw;
+	top: 55%;
+  }
   h1:before {
 	content: attr(data-heading);
 	position: absolute;

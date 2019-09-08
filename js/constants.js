@@ -10,4 +10,6 @@ var MAP      = { tw: 64, th: 24 },
     COLOR    = { GREY: '#333', LIGHTS_ON: 'rgb(218, 218, 218)', LIGHTS_OFF: 'rgb(24, 24, 24)' },
     KEY      = { SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40, R: 82, F: 70 };
     TIME_SWITCH_LIGHTS_OFF = 3000,
-    LANTERN_RADIUS = 6;
+    CREDITS_TIME = 5000,
+    LANTERN_RADIUS = 6,
+    LEVEL_MAX = 5;
