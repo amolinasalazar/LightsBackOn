@@ -126,7 +126,7 @@
 		if (entity.player && !entity.jumping && (wasLeft || wasRight) && entity.dx != -16){
 				footStepsSound.play();
 		}
-		else{
+		else if(entity.player){
 			footStepsSound.pause();
 			footStepsSound.currentTime = 0;
 		}
@@ -297,7 +297,7 @@
 	
 	document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
 	document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
-	footStepsSound.play();
+	footStepsSound.load = true;
 
 	loadLevel();
 
@@ -346,5 +346,4 @@
 		var tutorial = document.querySelector('p');
 		tutorial.parentNode.removeChild(tutorial);
 	}
-
 })();
