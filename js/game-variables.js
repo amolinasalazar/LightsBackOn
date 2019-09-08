@@ -20,6 +20,7 @@ var fps      = 60,
     lanternActive = false,
     lanternUsed = false,
     theEnd = false,
+    treasureCatched = false,
     footStepsSound = new Audio('./assets/foot-steps.mp3'),
     clickSound = new Audio('./assets/click.mp3'),
     lightsSound = new Audio('./assets/lights-sound.mp3');
@@ -37,6 +38,7 @@ function restartLevel() {
     mapTransparency = 1;
     lightsBlinking = true,
     FrameCalled = true,
+    treasureCatched = false,
     lanternActive = false;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);

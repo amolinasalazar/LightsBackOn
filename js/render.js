@@ -109,7 +109,7 @@ function renderTreasure(ctx, frame) {
 	var n, max, t;
 	for(n = 0, max = treasure.length ; n < max ; n++) {
 		t = treasure[n];
-		if (!t.collected){
+		if (!treasureCatched){
 			ctx.drawImage(getOrCreateImage("switch", SWITCH_IMG), t.x, t.y + TILE/3, TILE, TILE*2/3);
 		}
 	}

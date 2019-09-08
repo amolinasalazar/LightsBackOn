@@ -56,7 +56,7 @@
 		var n, max, t;
 		for(n = 0, max = treasure.length ; n < max ; n++) {
 			t = treasure[n];
-			if (!t.collected && overlap(player.x, player.y, TILE, TILE, t.x, t.y, TILE, TILE)){
+			if (!treasureCatched && overlap(player.x, player.y, TILE, TILE, t.x, t.y, TILE, TILE)){
 				collectTreasure(t);
 				clickSound.play();
 			}
@@ -72,8 +72,7 @@
 	}
 
 	function collectTreasure(t) {
-		player.collected++;
-		t.collected = true;
+		treasureCatched = true;
 		Level++;
 		LevelDataLoaded = false;
 		loadLevel();
@@ -177,7 +176,6 @@
 
 
 	// -- MAP LOAD --
-	
 	function setup(map) {
 		if (window.DOMParser) {
 			// code for modern browsers
@@ -198,10 +196,11 @@
 	function loadData(LevelDoc){
 		restartLevel();
 
-		// dividir en dos, solo llamar al setup pero no volver a cargar lkos datos con una llamada Get
-		var data    = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0].getElementsByTagName("data")[0].childNodes[0].nodeValue,
-				objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0].getElementsByTagName("object"),
-				n, obj, entity;
+		var data = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0]
+				.getElementsByTagName("data")[0].childNodes[0].nodeValue,
+			objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0]
+				.getElementsByTagName("object"),
+			n, obj, entity;
 
 		for(n = 0 ; n < objects.length ; n++) {
 			obj = objects[n];
@@ -228,18 +227,18 @@
 		entity.impulse  = METER * (IMPULSE);
 		entity.accel    = entity.maxdx / (ACCEL);
 		entity.friction = entity.maxdx / (FRICTION);
-		var type = obj.getAttribute("type");
-		entity.trap  = type == "trap";
+		var type 		= obj.getAttribute("type");
+		entity.trap  	= type == "trap";
 		entity.player   = type == "player";
 		entity.treasure = type == "treasure";
 		entity.start    = { x: entity.x, y: entity.y }
-		entity.killed = entity.collected = 0;
 		return entity;
 	}
 
 	// -- GAME LOOP --
-	var counter = 0, dt = 0, now,
-			last = timestamp();
+	var counter = 0,
+		dt = 0, now,
+		last = timestamp();
 	
 	function frame() {
 		now = timestamp();
