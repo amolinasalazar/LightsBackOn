@@ -25,7 +25,7 @@ function renderMap(ctx, mapTransparency) {
 		for(x = 0 ; x < MAP.tw ; x++) {
 			cell = tcell(x, y);
 			if (cell) {
-				ctx.fillStyle = COLORS[cell - 1];
+				ctx.fillStyle = COLOR.GREY;
 				ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
 			}
 		}
@@ -57,7 +57,7 @@ function refreshPlayerLastMovement(){
 }
 
 function renderPlayer(ctx, dt) {
-	ctx.fillStyle = COLOR.YELLOW;
+	ctx.fillStyle = COLOR.GREY;
 
 	refreshPlayerLastMovement();
 
@@ -76,17 +76,17 @@ function renderPlayer(ctx, dt) {
 
 	var n, max;
 
-	ctx.fillStyle = COLOR.GOLD;
-	for(n = 0, max = player.collected ; n < max ; n++)
-		ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
+	// ctx.fillStyle = COLOR.GOLD;
+	// for(n = 0, max = player.collected ; n < max ; n++)
+	// 	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 
-	ctx.fillStyle = COLOR.SLATE;
-	for(n = 0, max = player.killed ; n < max ; n++)
-		ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
+	// ctx.fillStyle = COLOR.SLATE;
+	// for(n = 0, max = player.killed ; n < max ; n++)
+	// 	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 }
 
 function renderMonsters(ctx, dt) {
-	ctx.fillStyle = COLOR.SLATE;
+	//ctx.fillStyle = COLOR.SLATE;
 	var n, max, monster;
 	for(n = 0, max = monsters.length ; n < max ; n++) {
 		monster = monsters[n];
@@ -96,7 +96,7 @@ function renderMonsters(ctx, dt) {
 }
 
 function renderTraps(ctx, dt) {
-	ctx.fillStyle = COLOR.SLATE;
+	//ctx.fillStyle = COLOR.SLATE;
 	var n, max, trap;
 	for(n = 0, max = traps.length ; n < max ; n++) {
 		trap = traps[n];
