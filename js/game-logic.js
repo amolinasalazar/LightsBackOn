@@ -46,10 +46,7 @@
 	function updateTrap(trap, dt) {
 		updateEntity(trap, dt);
 		if (overlap(player.x, player.y, TILE, TILE, trap.x, trap.y, TILE, TILE)) {
-			if ((player.dy > 0) && (trap.y - player.y > TILE/2))
-				killPlayer(player);
-			else
-				killPlayer(player);
+			killPlayer(player);
 		}
 	}
 
@@ -68,6 +65,8 @@
 		player.x = player.start.x;
 		player.y = player.start.y;
 		player.dx = player.dy = 0;
+		restartLevel();
+		loadLevel();
 	}
 
 	function collectTreasure(t) {
@@ -256,6 +255,7 @@
 	document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
 	document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
 	footStepsSound.load = true;
+	
 	loadLevel();
 
 	function loadLevel(){
