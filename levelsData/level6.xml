@@ -32,7 +32,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="Object Layer 1">
-  <object id="1" name="player" type="player" x="1524" y="584" width="32" height="32"/>
+  <object id="1" name="player" type="player" x="54" y="686" width="32" height="32"/>
   <object id="10" name="treasure" type="treasure" x="222.67" y="696.667" width="32" height="32"/>
   <object id="20" name="tra" type="trap" x="926" y="414" width="34" height="32"/>
   <object id="21" name="tra" type="trap" x="800" y="320" width="36" height="32"/>
