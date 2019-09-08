@@ -12,4 +12,4 @@ var MAP      = { tw: 64, th: 24 },
     TIME_SWITCH_LIGHTS_OFF = 3000,
     CREDITS_TIME = 5000,
     LANTERN_RADIUS = 6,
-    LEVEL_MAX = 5;
+    LEVEL_MAX = 6;
