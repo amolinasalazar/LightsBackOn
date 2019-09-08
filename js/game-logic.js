@@ -11,19 +11,21 @@
 	
 	// -- UPDATE LOOP --
 	function onkey(ev, key, down) {
-		switch(key) {
-			case KEY.LEFT:  player.left  = down; ev.preventDefault(); return false;
-			case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
-			case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
-			case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
-			case KEY.F: 
-				if(!lanternUsed){
-					setTimeout(function(){ 
-						lanternActive = false;
-						lanternUsed = true;
-					}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; 
-				}
-				return false;
+		if(!theEnd){
+			switch(key) {
+				case KEY.LEFT:  player.left  = down; ev.preventDefault(); return false;
+				case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
+				case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
+				case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
+				case KEY.F: 
+					if(!lanternUsed){
+						setTimeout(function(){ 
+							lanternActive = false;
+							lanternUsed = true;
+						}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; 
+					}
+					return false;
+			}
 		}
 	}
 	
@@ -315,6 +317,11 @@
 	}
 
 	function credits(){
+		theEnd = true;
+
+		var canvas = document.querySelector('#canvas');
+		canvas.parentNode.removeChild(canvas);
+
 		var credits = document.createElement('h2');
 		credits.setAttribute("class", "credits-titles");
 		credits.innerHTML = "Developer & Game Designer";
