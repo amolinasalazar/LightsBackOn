@@ -1,5 +1,3 @@
-
-
 (function() {
 
 	// -- POLYFILLS --
@@ -18,9 +16,14 @@
 			case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
 			case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
 			case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
-			case KEY.F: setTimeout(function(){ 
-					lanternActive = false;
-				}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; return false;
+			case KEY.F: 
+				if(!lanternUsed){
+					setTimeout(function(){ 
+						lanternActive = false;
+						lanternUsed = true;
+					}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; 
+				}
+				return false;
 		}
 	}
 	
@@ -181,7 +184,7 @@
 			xmlDoc = parser.parseFromString(map,"text/xml");
 		} else {
 			// code for old IE browsers
-		xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+			xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
 			xmlDoc.async = false;
 			xmlDoc.loadXML(map); 
 		}
@@ -203,9 +206,9 @@
 			obj = objects[n];
 			entity = setupEntity(obj);
 			switch(obj.getAttribute("type")) {
-			case "player"   : player = entity; break;
-			case "treasure" : treasure.push(entity); break;
-			case "trap" : traps.push(entity); break;
+				case "player"   : player = entity; break;
+				case "treasure" : treasure.push(entity); break;
+				case "trap" : traps.push(entity); break;
 			}
 		}
 
@@ -259,12 +262,8 @@
 
 	function loadLevel(){
 		document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_ON;
+		lanternUsed = true;
 
-		if(Level == 1 && !TutorialPrinted){
-			printTutorial();
-			TutorialPrinted = true;
-		}
-		
 		if(Level == 2 && !TutorialRemoved){
 			removeTutorial();
 			TutorialRemoved = true
@@ -289,6 +288,11 @@
 			clearTimeout(LightsTimeout);
 
 		LightsTimeout = setTimeout(function(){ 
+			if(Level == 1 && !TutorialPrinted){
+				printTutorial();
+				TutorialPrinted = true;
+			}
+			lanternUsed = false;
 			lightsBlinking = false;
 			mapTransparency = 0; 
 			lightsSound.play(); 
@@ -298,7 +302,7 @@
 
 	function printTutorial(){
 		var tutorial = document.createElement('p');
-		tutorial.innerHTML = "Use arrows to move <br/> Press Space to jump <br/> Press R to restart level";
+		tutorial.innerHTML = "There is a blackout! Look for the fuse box and turn the lights back on<br/><br/>Use arrows to move<br/>Press Space to jump<br/>Press R to restart level<br/>Press F to use the lantern (only one use per level)";
 		var title = document.querySelector('title');
 		title.parentNode.insertBefore(tutorial, title);
 	}

@@ -18,6 +18,7 @@ var fps      = 60,
     LevelDataLoaded = false,
     LevelDoc,
     lanternActive = false,
+    lanternUsed = false,
     footStepsSound = new Audio('./assets/foot-steps.mp3'),
     clickSound = new Audio('./assets/click.mp3'),
     lightsSound = new Audio('./assets/lights-sound.mp3');
@@ -34,7 +35,8 @@ function restartLevel() {
     cells    = [];
     mapTransparency = 1;
     lightsBlinking = true,
-    FrameCalled = true;
+    FrameCalled = true,
+    lanternActive = false;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
