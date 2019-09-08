@@ -14,7 +14,6 @@ function render(ctx, frame, dt, width, height, mapTransparency) {
 	renderMap(ctx, dt, mapTransparency);
 	renderTreasure(ctx, frame);
 	renderPlayer(ctx, dt);
-	renderMonsters(ctx, dt);
 	renderTraps(ctx, dt);
 }
 
@@ -106,16 +105,6 @@ function renderPlayer(ctx, dt) {
 	// ctx.fillStyle = COLOR.SLATE;
 	// for(n = 0, max = player.killed ; n < max ; n++)
 	// 	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
-}
-
-function renderMonsters(ctx, dt) {
-	//ctx.fillStyle = COLOR.SLATE;
-	var n, max, monster;
-	for(n = 0, max = monsters.length ; n < max ; n++) {
-		monster = monsters[n];
-		if (!monster.dead)
-			ctx.drawImage(getOrCreateImage("trap"+n, TRAP_IMG), monster.x + (monster.dx * dt), monster.y + (monster.dy * dt), TILE, TILE);
-	}
 }
 
 function renderTraps(ctx, dt) {

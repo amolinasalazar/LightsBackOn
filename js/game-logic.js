@@ -5,12 +5,10 @@
 	// -- POLYFILLS --
 	if (!window.requestAnimationFrame) {
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame || 
-																	 window.mozRequestAnimationFrame    || 
-																	 window.oRequestAnimationFrame      || 
-																	 window.msRequestAnimationFrame     || 
-																	 function(callback) {
-																		 window.setTimeout(callback, 1000 / 60);
-																	 }
+		window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || 
+		function(callback) {
+			window.setTimeout(callback, 1000 / 60);
+		}
 	}
 	
 	// -- UPDATE LOOP --
@@ -28,19 +26,12 @@
 	
 	function update(dt) {
 		updatePlayer(dt);
-		updateMonsters(dt);
 		updateTraps(dt);
 		checkTreasure();
 	}
 
 	function updatePlayer(dt) {
 		updateEntity(player, dt);
-	}
-
-	function updateMonsters(dt) {
-		var n, max;
-		for(n = 0, max = monsters.length ; n < max ; n++)
-			updateMonster(monsters[n], dt);
 	}
 
 	function updateTraps(dt) {
@@ -59,18 +50,6 @@
 		}
 	}
 
-	function updateMonster(monster, dt) {
-		if (!monster.dead) {
-			updateEntity(monster, dt);
-			if (overlap(player.x, player.y, TILE, TILE, monster.x, monster.y, TILE, TILE)) {
-				if ((player.dy > 0) && (monster.y - player.y > TILE/2))
-					killMonster(monster);
-				else
-					killPlayer(player);
-			}
-		}
-	}
-
 	function checkTreasure() {
 		var n, max, t;
 		for(n = 0, max = treasure.length ; n < max ; n++) {
@@ -80,11 +59,6 @@
 				clickSound.play();
 			}
 		}
-	}
-
-	function killMonster(monster) {
-		player.killed++;
-		monster.dead = true;
 	}
 
 	function killPlayer(player) {
@@ -188,17 +162,6 @@
 				entity.dx = 0;
 			}
 		}
-
-		if (entity.monster) {
-			if (entity.left && (cell || !celldown)) {
-				entity.left = false;
-				entity.right = true;
-			}      
-			else if (entity.right && (cellright || !celldiag)) {
-				entity.right = false;
-				entity.left  = true;
-			}
-		}
 	
 		entity.falling = ! (celldown || (nx && celldiag));
 
@@ -241,7 +204,6 @@
 			entity = setupEntity(obj);
 			switch(obj.getAttribute("type")) {
 			case "player"   : player = entity; break;
-			case "monster"  : monsters.push(entity); break;
 			case "treasure" : treasure.push(entity); break;
 			case "trap" : traps.push(entity); break;
 			}
@@ -256,12 +218,6 @@
 		entity.y        = parseInt(obj.getAttribute("y"));
 		entity.dx       = 0;
 		entity.dy       = 0;
-		//entity.gravity  = METER * (obj.properties.gravity || GRAVITY);
-		//entity.maxdx    = METER * (obj.properties.maxdx   || MAXDX);
-		//entity.maxdy    = METER * (obj.properties.maxdy   || MAXDY);
-		//entity.impulse  = METER * (obj.properties.impulse || IMPULSE);
-		//entity.accel    = entity.maxdx / (obj.properties.accel    || ACCEL);
-		//entity.friction = entity.maxdx / (obj.properties.friction || FRICTION);
 		entity.gravity  = METER * (GRAVITY);
 		entity.maxdx    = METER * (MAXDX);
 		entity.maxdy    = METER * (MAXDY);
@@ -269,19 +225,16 @@
 		entity.accel    = entity.maxdx / (ACCEL);
 		entity.friction = entity.maxdx / (FRICTION);
 		var type = obj.getAttribute("type");
-		entity.monster  = type == "monster";
 		entity.trap  = type == "trap";
 		entity.player   = type == "player";
 		entity.treasure = type == "treasure";
-		//entity.left     = obj.properties.left;
-		//entity.right    = obj.properties.right;
 		entity.start    = { x: entity.x, y: entity.y }
 		entity.killed = entity.collected = 0;
 		return entity;
 	}
 
 	// -- GAME LOOP --
-	
+
 	var counter = 0, dt = 0, now,
 			last = timestamp();
 	

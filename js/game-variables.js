@@ -5,7 +5,6 @@ var fps      = 60,
     width    = canvas.width  = MAP.tw * TILE,
     height   = canvas.height = MAP.th * TILE,
     player   = {},
-    monsters = [],
     treasure = [],
     traps = [],
     cells    = [],
@@ -30,7 +29,6 @@ function restartLevel() {
     width    = canvas.width  = MAP.tw * TILE;
     height   = canvas.height = MAP.th * TILE;
     player   = {};
-    monsters = [];
     traps = [];
     treasure = [];
     cells    = [];
