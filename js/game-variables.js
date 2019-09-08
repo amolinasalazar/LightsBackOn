@@ -18,6 +18,7 @@ var fps      = 60,
     LightsTimeout,
     LevelDataLoaded = false,
     LevelDoc,
+    lanternActive = false,
     footStepsSound = new Audio('./assets/foot-steps.mp3'),
     clickSound = new Audio('./assets/click.mp3'),
     lightsSound = new Audio('./assets/lights-sound.mp3');

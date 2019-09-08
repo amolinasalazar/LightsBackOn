@@ -11,26 +11,42 @@ var PlayerFacing = {
 
 function render(ctx, frame, dt, width, height, mapTransparency) {
 	ctx.clearRect(0, 0, width, height);
-	renderMap(ctx, mapTransparency);
+	renderMap(ctx, dt, mapTransparency);
 	renderTreasure(ctx, frame);
 	renderPlayer(ctx, dt);
 	renderMonsters(ctx, dt);
 	renderTraps(ctx, dt);
 }
 
-function renderMap(ctx, mapTransparency) {
+function renderMap(ctx, dt, mapTransparency) {
 	var x, y, cell;
 	ctx.globalAlpha = mapTransparency;
-	for(y = 0 ; y < MAP.th ; y++) {
-		for(x = 0 ; x < MAP.tw ; x++) {
-			cell = tcell(x, y);
-			if (cell) {
-				ctx.fillStyle = COLOR.GREY;
-				ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+	if(!lanternActive){
+		for(y = 0 ; y < MAP.th ; y++) {
+			for(x = 0 ; x < MAP.tw ; x++) {
+				cell = tcell(x, y);
+				if (cell) {
+					ctx.fillStyle = COLOR.GREY;
+					ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+				}
+			}
+		}
+		ctx.globalAlpha = 1;
+	}
+	else{
+		ctx.globalAlpha = 1;
+		for(y = 0 ; y < MAP.th ; y++) {
+			for(x = 0 ; x < MAP.tw ; x++) {
+				cell = tcell(x, y);
+				renderLantern(player, dt, LANTERN_RADIUS);
+
+				if (cell && Math.sqrt((x - p2t(player.x))*(x - p2t(player.x)) + (y - p2t(player.y))*(y - p2t(player.y))) < LANTERN_RADIUS) {
+					ctx.fillStyle = COLOR.GREY;
+					ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+				}
 			}
 		}
 	}
-	ctx.globalAlpha = 1;
 }
 
 function getOrCreateImage(id, src){
@@ -54,6 +70,13 @@ function refreshPlayerLastMovement(){
 	else if(!player.right && player.left){
 		playerLastMovement = PlayerFacing.LEFT;
 	}
+}
+
+function renderLantern(entity, dt, radius){
+	ctx.beginPath();
+	ctx.arc(entity.x + (entity.dx * dt), entity.y + (entity.dy * dt), radius * TILE, 0, 2 * Math.PI);
+	ctx.strokeStyle = "yellow";
+	ctx.stroke();
 }
 
 function renderPlayer(ctx, dt) {

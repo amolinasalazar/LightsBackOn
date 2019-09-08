@@ -20,6 +20,9 @@
 			case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
 			case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
 			case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
+			case KEY.F: setTimeout(function(){ 
+					lanternActive = false;
+				}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; return false;
 		}
 	}
 	
@@ -332,7 +335,12 @@
 		if(LightsTimeout)
 			clearTimeout(LightsTimeout);
 
-		LightsTimeout = setTimeout(function(){ lightsBlinking = false; mapTransparency = 0; lightsSound.play(); document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; }, TIME_SWITCH_LIGHTS_OFF);
+		LightsTimeout = setTimeout(function(){ 
+			lightsBlinking = false;
+			mapTransparency = 0; 
+			lightsSound.play(); 
+			document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; 
+		}, TIME_SWITCH_LIGHTS_OFF);
 	}
 
 	function printTutorial(){
