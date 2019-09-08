@@ -38,7 +38,6 @@ function renderMap(ctx, dt, mapTransparency) {
 			for(x = 0 ; x < MAP.tw ; x++) {
 				cell = tcell(x, y);
 				renderLantern(player, dt, LANTERN_RADIUS);
-
 				if (cell && Math.sqrt((x - p2t(player.x))*(x - p2t(player.x)) + (y - p2t(player.y))*(y - p2t(player.y))) < LANTERN_RADIUS) {
 					ctx.fillStyle = COLOR.GREY;
 					ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
@@ -95,20 +94,9 @@ function renderPlayer(ctx, dt) {
 	}
 	
   	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
-
-	var n, max;
-
-	// ctx.fillStyle = COLOR.GOLD;
-	// for(n = 0, max = player.collected ; n < max ; n++)
-	// 	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
-
-	// ctx.fillStyle = COLOR.SLATE;
-	// for(n = 0, max = player.killed ; n < max ; n++)
-	// 	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
 }
 
 function renderTraps(ctx, dt) {
-	//ctx.fillStyle = COLOR.SLATE;
 	var n, max, trap;
 	for(n = 0, max = traps.length ; n < max ; n++) {
 		trap = traps[n];
@@ -117,13 +105,11 @@ function renderTraps(ctx, dt) {
 }
 
 function renderTreasure(ctx, frame) {
-	//ctx.fillStyle   = COLOR.GOLD;
 	ctx.globalAlpha = 0.25 + tweenTreasure(frame, 240);
 	var n, max, t;
 	for(n = 0, max = treasure.length ; n < max ; n++) {
 		t = treasure[n];
 		if (!t.collected){
-			//ctx.fillRect(t.x, t.y + TILE/3, TILE, TILE*2/3);
 			ctx.drawImage(getOrCreateImage("switch", SWITCH_IMG), t.x, t.y + TILE/3, TILE, TILE*2/3);
 		}
 	}
