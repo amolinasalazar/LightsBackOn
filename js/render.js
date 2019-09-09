@@ -20,7 +20,7 @@ function render(ctx, frame, dt, width, height, mapTransparency) {
 function renderMap(ctx, dt, mapTransparency) {
 	var x, y, cell;
 	ctx.globalAlpha = mapTransparency;
-	if(!lanternActive){
+	if(!LanternActive){
 		for(y = 0 ; y < MAP.th ; y++) {
 			for(x = 0 ; x < MAP.tw ; x++) {
 				cell = tcell(x, y);
@@ -37,9 +37,9 @@ function renderMap(ctx, dt, mapTransparency) {
 		for(y = 0 ; y < MAP.th ; y++) {
 			for(x = 0 ; x < MAP.tw ; x++) {
 				cell = tcell(x, y);
-				renderLantern(player, dt, LANTERN_RADIUS);
+				renderLantern(Player, dt, LANTERN_RADIUS);
 				// Euclidean distance from tile rendered and the player
-				if (cell && Math.sqrt((x - p2t(player.x)) * (x - p2t(player.x)) + (y - p2t(player.y))*(y - p2t(player.y))) < LANTERN_RADIUS) {
+				if (cell && Math.sqrt((x - p2t(Player.x)) * (x - p2t(Player.x)) + (y - p2t(Player.y))*(y - p2t(Player.y))) < LANTERN_RADIUS) {
 					ctx.fillStyle = COLOR.GREY;
 					ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
 				}
@@ -49,10 +49,10 @@ function renderMap(ctx, dt, mapTransparency) {
 }
 
 function refreshPlayerLastMovement(){
-	if(player.right && !player.left){
+	if(Player.right && !Player.left){
 		playerLastMovement = PlayerFacing.RIGHT;
 	}
-	else if(!player.right && player.left){
+	else if(!Player.right && Player.left){
 		playerLastMovement = PlayerFacing.LEFT;
 	}
 }
@@ -81,13 +81,13 @@ function renderPlayer(ctx, dt) {
 			var img = getOrCreateImage("playerRight", PLAYER_RIGHT_IMG);
 	}
 	
-  	ctx.drawImage(img, player.x + (player.dx * dt), player.y + (player.dy * dt), TILE, TILE);
+  	ctx.drawImage(img, Player.x + (Player.dx * dt), Player.y + (Player.dy * dt), TILE, TILE);
 }
 
 function renderTraps(ctx, dt) {
 	var n, max, trap;
-	for(n = 0, max = traps.length ; n < max ; n++) {
-		trap = traps[n];
+	for(n = 0, max = Traps.length ; n < max ; n++) {
+		trap = Traps[n];
 		ctx.drawImage(getOrCreateImage("trap"+n, TRAP_IMG), trap.x + (trap.dx * dt), trap.y + (trap.dy * dt), TILE, TILE);
 	}
 }
@@ -95,9 +95,9 @@ function renderTraps(ctx, dt) {
 function renderTreasure(ctx, frame) {
 	ctx.globalAlpha = 0.25 + tweenTreasure(frame, 240);
 	var n, max, t;
-	for(n = 0, max = treasure.length ; n < max ; n++) {
-		t = treasure[n];
-		if (!treasureCatched){
+	for(n = 0, max = Treasure.length ; n < max ; n++) {
+		t = Treasure[n];
+		if (!TreasureCatched){
 			ctx.drawImage(getOrCreateImage("switch", SWITCH_IMG), t.x, t.y + TILE/3, TILE, TILE*2/3);
 		}
 	}

@@ -25,10 +25,10 @@ function removeTutorial(){
 }
 
 function credits(){
-	theEnd = true;
+	TheEnd = true;
 
-	var canvas = document.querySelector('#canvas');
-	canvas.parentNode.removeChild(canvas);
+	var canvasElement = document.querySelector('#canvas');
+	canvasElement.parentNode.removeChild(canvasElement);
 
 	var credits = document.createElement('h2');
 	credits.setAttribute("class", "credits-titles");
@@ -48,16 +48,16 @@ function credits(){
 		names.setAttribute("data-heading", "Beatriz Iañez Bustamante");
 		names.innerHTML = "Beatriz Iañez Bustamante";
 
-		clickSound.play();
+		ClickSound.play();
 		setTimeout(function(){ 
 			names.setAttribute("data-heading", "The End");
 			names.innerHTML = "The End";
 			credits.parentNode.removeChild(credits);
 
-			clickSound.play();
+			ClickSound.play();
 			setTimeout(function(){ 
 				names.parentNode.removeChild(names);
-				lightsSound.play(); 
+				LightsSound.play(); 
 			}, CREDITS_TIME);
 		}, CREDITS_TIME);
 	}, CREDITS_TIME);

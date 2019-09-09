@@ -11,18 +11,18 @@
 	
 	// -- UPDATE LOOP --
 	function onkey(ev, key, down) {
-		if(!theEnd){
+		if(!TheEnd){
 			switch(key) {
-				case KEY.LEFT:  player.left  = down; ev.preventDefault(); return false;
-				case KEY.RIGHT: player.right = down; ev.preventDefault(); return false;
-				case KEY.SPACE: player.jump  = down; ev.preventDefault(); return false;
+				case KEY.LEFT:  Player.left  = down; ev.preventDefault(); return false;
+				case KEY.RIGHT: Player.right = down; ev.preventDefault(); return false;
+				case KEY.SPACE: Player.jump  = down; ev.preventDefault(); return false;
 				case KEY.R: restartLevel(); loadLevel(); ev.preventDefault(); return false;
 				case KEY.F: 
-					if(!lanternUsed){
+					if(!LanternUsed){
 						setTimeout(function(){ 
-							lanternActive = false;
-							lanternUsed = true;
-						}, TIME_SWITCH_LIGHTS_OFF); lanternActive = true; 
+							LanternActive = false;
+							LanternUsed = true;
+						}, TIME_SWITCH_LIGHTS_OFF); LanternActive = true; 
 					}
 					return false;
 			}
@@ -36,43 +36,43 @@
 	}
 
 	function updatePlayer(dt) {
-		updateEntity(player, dt);
+		updateEntity(Player, dt);
 	}
 
 	function updateTraps(dt) {
 		var n, max;
-		for(n = 0, max = traps.length ; n < max ; n++)
-			updateTrap(traps[n], dt);
+		for(n = 0, max = Traps.length ; n < max ; n++)
+			updateTrap(Traps[n], dt);
 	}
 
 	function updateTrap(trap, dt) {
 		updateEntity(trap, dt);
-		if (overlap(player.x, player.y, TILE, TILE, trap.x, trap.y, TILE, TILE)) {
-			killPlayer(player);
+		if (overlap(Player.x, Player.y, TILE, TILE, trap.x, trap.y, TILE, TILE)) {
+			killPlayer(Player);
 		}
 	}
 
 	function checkTreasure() {
 		var n, max, t;
-		for(n = 0, max = treasure.length ; n < max ; n++) {
-			t = treasure[n];
-			if (!treasureCatched && overlap(player.x, player.y, TILE, TILE, t.x, t.y, TILE, TILE)){
+		for(n = 0, max = Treasure.length ; n < max ; n++) {
+			t = Treasure[n];
+			if (!TreasureCatched && overlap(Player.x, Player.y, TILE, TILE, t.x, t.y, TILE, TILE)){
 				collectTreasure(t);
-				clickSound.play();
+				ClickSound.play();
 			}
 		}
 	}
 
-	function killPlayer(player) {
-		player.x = player.start.x;
-		player.y = player.start.y;
-		player.dx = player.dy = 0;
+	function killPlayer(Player) {
+		Player.x = Player.start.x;
+		Player.y = Player.start.y;
+		Player.dx = Player.dy = 0;
 		restartLevel();
 		loadLevel();
 	}
 
 	function collectTreasure(t) {
-		treasureCatched = true;
+		TreasureCatched = true;
 		Level++;
 		LevelDataLoaded = false;
 		loadLevel();
@@ -104,11 +104,11 @@
 		}
 
 		if (entity.player && !entity.jumping && (wasLeft || wasRight) && entity.dx != -16){
-				footStepsSound.play();
+				FootStepsSound.play();
 		}
 		else if(entity.player){
-			footStepsSound.pause();
-			footStepsSound.currentTime = 0;
+			FootStepsSound.pause();
+			FootStepsSound.currentTime = 0;
 		}
 	
 		entity.x  = entity.x  + (dt * entity.dx);
@@ -169,7 +169,7 @@
 		entity.falling = ! (celldown || (nx && celldiag));
 
 		// die for falling
-		if(entity.y > width)
+		if(entity.y > Width)
 			killPlayer(entity);
 	}
 
@@ -204,13 +204,13 @@
 			obj = objects[n];
 			entity = setupEntity(obj);
 			switch(obj.getAttribute("type")) {
-				case "player"   : player = entity; break;
-				case "treasure" : treasure.push(entity); break;
-				case "trap" : traps.push(entity); break;
+				case "player"   : Player = entity; break;
+				case "treasure" : Treasure.push(entity); break;
+				case "trap" : Traps.push(entity); break;
 			}
 		}
 
-		cells = data.split(',').map(x => parseInt(x));
+		Cells = data.split(',').map(x => parseInt(x));
 	}
 
 	function setupEntity(obj) {
@@ -245,15 +245,15 @@
 			dt = dt - STEP;
 			update(STEP);
 		}
-		render(ctx, counter, dt, width, height, mapTransparency, MAP);
+		render(ctx, counter, dt, Width, Height, MapTransparency, MAP);
 		last = now;
 		counter++;
-		requestAnimationFrame(frame, canvas);
+		requestAnimationFrame(frame, Canvas);
 	}
 	
 	document.addEventListener('keydown', function(ev) { return onkey(ev, ev.keyCode, true);  }, false);
 	document.addEventListener('keyup',   function(ev) { return onkey(ev, ev.keyCode, false); }, false);
-	footStepsSound.load = true;
+	FootStepsSound.load = true;
 	
 	loadLevel();
 
@@ -262,14 +262,14 @@
 			credits();
 		else{
 			document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_ON;
-			lanternUsed = true;
+			LanternUsed = true;
 	
 			if(Level == 2 && !TutorialRemoved){
 				removeTutorial();
 				TutorialRemoved = true
 			}
 	
-			mapTransparency = 1;
+			MapTransparency = 1;
 			if(!LevelDataLoaded){
 				get(`levelsData/level${Level}.xml`, function(req) {
 					setup(req.responseText);
@@ -292,9 +292,9 @@
 					printTutorial();
 					TutorialPrinted = true;
 				}
-				lanternUsed = false;
-				mapTransparency = 0; 
-				lightsSound.play(); 
+				LanternUsed = false;
+				MapTransparency = 0; 
+				LightsSound.play(); 
 				document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; 
 			}, TIME_SWITCH_LIGHTS_OFF);
 		}
