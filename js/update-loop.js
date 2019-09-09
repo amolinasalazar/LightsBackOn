@@ -94,6 +94,7 @@ function updateEntity(entity, dt) {
 		entity.jumping = true;
 	}
 
+	// play footsteps when player is moving
 	if (entity.player && !entity.jumping && (wasLeft || wasRight) && entity.dx != -16){
 			FootStepsSound.play();
 	}
