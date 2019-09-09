@@ -48,20 +48,6 @@ function renderMap(ctx, dt, mapTransparency) {
 	}
 }
 
-function getOrCreateImage(id, src){
-	var image = document.getElementById(id);
-
-	if(image)
-		return image;
-	
-	var container = document.getElementById("hiddenDiv");
-	var imageCreated = document.createElement('img');
-	imageCreated.id = id;
-	imageCreated.src = src;
-	container.appendChild(imageCreated);
-	return imageCreated;
-}
-
 function refreshPlayerLastMovement(){
 	if(player.right && !player.left){
 		playerLastMovement = PlayerFacing.RIGHT;
