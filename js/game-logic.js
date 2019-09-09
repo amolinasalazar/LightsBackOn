@@ -80,10 +80,10 @@
 
 	function updateEntity(entity, dt) {
 		var wasLeft    = entity.dx  < 0,
-				wasRight   = entity.dx  > 0,
-				falling    = entity.falling,
-				friction   = entity.friction * (falling ? 0.5 : 1),
-				accel      = entity.accel    * (falling ? 0.5 : 1);
+			wasRight   = entity.dx  > 0,
+			falling    = entity.falling,
+			friction   = entity.friction * (falling ? 0.5 : 1),
+			accel      = entity.accel    * (falling ? 0.5 : 1);
 	
 		entity.ddx = 0;
 		entity.ddy = entity.gravity;
@@ -172,8 +172,6 @@
 		if(entity.y > width)
 			killPlayer(entity);
 	}
-
-
 
 	// -- MAP LOAD --
 	function setup(map) {
@@ -295,7 +293,6 @@
 					TutorialPrinted = true;
 				}
 				lanternUsed = false;
-				lightsBlinking = false;
 				mapTransparency = 0; 
 				lightsSound.play(); 
 				document.getElementsByTagName("body")[0].style.background = COLOR.LIGHTS_OFF; 
