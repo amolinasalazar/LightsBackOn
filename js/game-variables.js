@@ -1,11 +1,9 @@
-var fps      = 60,	// frames per second
-	step     = 1/fps,	// dt time passed to update loop
-	canvas   = document.getElementById('canvas'),
+var canvas   = document.getElementById('canvas'),
 	ctx      = canvas.getContext('2d'),
 	width    = canvas.width  = MAP.tw * TILE,
 	height   = canvas.height = MAP.th * TILE,
 	player   = {},
-	treasure = [],
+	treasure = [],	// fuse box
 	traps = [],
 	cells    = [],
 	Level    = 1,
@@ -26,11 +24,6 @@ var fps      = 60,	// frames per second
 
 // reset some global variables when level is reset
 function restartLevel() {
-	fps      = 60;
-	step     = 1/fps;
-	ctx      = canvas.getContext('2d');
-	width    = canvas.width  = MAP.tw * TILE;
-	height   = canvas.height = MAP.th * TILE;
 	player   = {};
 	traps = [];
 	treasure = [];

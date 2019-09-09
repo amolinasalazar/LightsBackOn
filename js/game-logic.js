@@ -241,9 +241,9 @@
 	function frame() {
 		now = timestamp();
 		dt = dt + Math.min(1, (now - last) / 1000);
-		while(dt > step) {
-			dt = dt - step;
-			update(step);
+		while(dt > STEP) {
+			dt = dt - STEP;
+			update(STEP);
 		}
 		render(ctx, counter, dt, width, height, mapTransparency, MAP);
 		last = now;
