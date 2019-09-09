@@ -57,6 +57,7 @@ function refreshPlayerLastMovement(){
 	}
 }
 
+// render circule around player
 function renderLantern(entity, dt, radius){
 	ctx.beginPath();
 	ctx.arc(entity.x + (entity.dx * dt), entity.y + (entity.dy * dt), radius * TILE, 0, 2 * Math.PI);
