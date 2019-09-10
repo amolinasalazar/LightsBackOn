@@ -26,18 +26,11 @@
 		</canvas>
 		<div id="hiddenDiv" style="display:none"></div>
 
-		<script src="./js/constants.js"></script>
-		<script src="./js/utilities.js"></script>
-		<script src="./js/graph-functions.js"></script>
-		<script src="./js/dom-manipulation.js"></script>
-		<script src="./js/game-variables.js"></script>
-		<script src="./js/render.js"></script>
-		<script src="./js/update-loop.js"></script>
 		<script>
 		
 		document.addEventListener('keydown', function loadGame(e) { 
 			var script = document.createElement('script');
-			script.src = 'js/main.js';
+			script.src = 'min/default.js';
 			var element = document.querySelector('script');
 			element.parentNode.insertBefore(script, element);
 

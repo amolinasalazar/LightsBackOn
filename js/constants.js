@@ -14,4 +14,4 @@ var MAP 	= { tw: 64, th: 24 },
 	TIME_SWITCH_LIGHTS_OFF = 3000,	// delay to switch off the lights
 	CREDITS_TIME = 5000,			// delay between names during credits
 	LANTERN_RADIUS = 6,				// radius of what element should be rended when lantern is on
-	LEVEL_MAX = 6;					// number of levels
+	LEVEL_MAX = 5;					// number of levels

@@ -186,7 +186,7 @@ function setup(map) {
 function loadData(LevelDoc){
 	restartLevel();
 
-	var data = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("layer")[0]
+	var data = LevelDoc.getElementsByTagName("map")[0]
 			.getElementsByTagName("data")[0].childNodes[0].nodeValue,
 		objects = LevelDoc.getElementsByTagName("map")[0].getElementsByTagName("objectgroup")[0]
 			.getElementsByTagName("object"),
