@@ -17,14 +17,14 @@ I'm pretty much happy with the result, although there are some people that says 
 So, I'm not a frontend expert at all, but I have some experience with JS at least. I was not thinking use good design patterns, refactor the code and, of course, making unit tests! I was working on this while I was working on real life. And, this period was not easy at all, I had a "crunch" timing doing extra hours and even, I had to travel some days to England for work. Taking into account all of these difficulties, I knew that I just had time to do a simple game with a simple structure. The only thing that I wanted to respect was to do it from scratch, not using any library. However, as a template I used the code from this blog: [Tiny Plataformer](https://codeincomplete.com/posts/tiny-platformer/) to have a foundation structure of the game logic, levels data and so on. This step was essential for me as my lack of experience building game engines.
 
 From that point I had almost implemented all the physics for the game, but I did some changes to adapt it for my game design: 
-⋅⋅* Creating all new levels with [Tiled](https://www.mapeditor.org/).
-⋅⋅* Exporting levels data to XML instead of JSON files (to earn some extra space).
-⋅⋅* Adding logic to render/stop rendering when lights go off.
-⋅⋅* Adding image and sound assets.
-⋅⋅* Building intro and credits with some cool tween effects for the words.
-⋅⋅* Adding the candle element.
-⋅⋅* Restarting level by pressing R.
-⋅⋅* Some more minor improvements and changes.
+* Creating all new levels with [Tiled](https://www.mapeditor.org/).
+* Exporting levels data to XML instead of JSON files (to earn some extra space).
+* Adding logic to render/stop rendering when lights go off.
+* Adding image and sound assets.
+* Building intro and credits with some cool tween effects for the words.
+* Adding the candle element.
+* Restarting level by pressing R.
+* Some more minor improvements and changes.
 
 Maybe, the most difficult part of all of this was the implementation of the candle, for that I render everything within a bubble that contains the player. That was a bit tricky, but straightforward at the end.
 
