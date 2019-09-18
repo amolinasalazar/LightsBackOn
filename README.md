@@ -1,6 +1,8 @@
 # LightsBackOn
 Game entry for [JS13k games](https://js13kgames.com/) competition 2019.
 
+[Play the game](https://js13kgames.com/entries/lights-back-on)
+
 ## The Challenge
 The idea of this game jam is to develop a videogame using JavaScript/HTML/CSS languages with the main constrain of generate a .zip file with a maximum size of 13KB.
 
