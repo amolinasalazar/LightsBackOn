@@ -1,4 +1,5 @@
 # LightsBackOn
+![Lights Back On](demo.gif)
 Game entry for [JS13k games](https://js13kgames.com/) competition 2019.
 
 [Play the game](https://js13kgames.com/entries/lights-back-on)
